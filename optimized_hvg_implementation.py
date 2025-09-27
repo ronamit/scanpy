@@ -53,7 +53,8 @@ def _compute_hvg_stats_sparse(data, indices, indptr, n_rows, n_cols):
 
     # Compute means and variances
     means = sums / n_rows
-    variances = sq_sums / n_rows - means * means
+    # Use sample variance (n-1 denominator) to match master branch (correction=1)
+    variances = (sq_sums / n_rows - means * means) * n_rows / (n_rows - 1)
 
     # Ensure non-negative variances (numerical stability)
     variances = np.maximum(variances, 0.0)
@@ -75,14 +76,14 @@ def _compute_hvg_stats_dense(X):
             sum_val += X[row, col]
         means[col] = sum_val / n_rows
 
-    # Compute variances
+    # Compute variances (sample variance with n-1 denominator)
     for col in range(n_cols):
         mean_val = means[col]
         var_sum = 0.0
         for row in range(n_rows):
             diff = X[row, col] - mean_val
             var_sum += diff * diff
-        variances[col] = var_sum / n_rows
+        variances[col] = var_sum / (n_rows - 1)
 
     return means.astype(np.float32), variances.astype(np.float32)
 
