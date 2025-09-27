@@ -53,11 +53,11 @@ def _compute_hvg_stats_sparse(data, indices, indptr, n_rows, n_cols):
 
     # Compute means and variances
     means = sums / n_rows
-    # Use sample variance (n-1 denominator) to match master branch (correction=1)
+    # Use sample variance (n-1 denominator)  (correction=1)
     if n_rows > 1:
         variances = (sq_sums / n_rows - means * means) * n_rows / (n_rows - 1)
     else:
-        # For single row, variance is 0 - match master branch behavior
+        # For single row, variance is defined as 0
         variances = np.zeros(n_cols, dtype=np.float64)
 
     # Ensure non-negative variances (numerical stability)

@@ -8,6 +8,12 @@ from ._deprecated.highly_variable_genes import filter_genes_dispersion
 from ._deprecated.sampling import subsample
 from ._highly_variable_genes import highly_variable_genes
 from ._normalization import normalize_total
+from ._optimizations import (
+    enable_optimizations,
+    disable_optimizations,
+    is_optimized,
+    optimization_status,
+)
 from ._pca import pca
 from ._qc import calculate_qc_metrics
 from ._recipes import recipe_seurat, recipe_weinreb17, recipe_zheng17
